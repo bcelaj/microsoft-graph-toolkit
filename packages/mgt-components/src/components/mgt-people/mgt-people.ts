@@ -302,20 +302,25 @@ export class MgtPeople extends MgtTemplatedComponent {
    * @returns {TemplateResult}
    * @memberof MgtPeople
    */
-  protected renderPeople(): TemplateResult {
+   protected renderPeople(): TemplateResult {
     const maxPeople = this.people.slice(0, this.showMax);
 
     return html`
       <ul class="people-list">
-        ${repeat(
+      ${(this.people.length > 1) ?
+        repeat(
           maxPeople,
-          p => (p.id ? p.id : p.displayName),
+          p => ((p == null) ?  null :  (p.id ? p.id : p.displayName)),
           p => html`
             <li class="people-person">
               ${this.renderPerson(p)}
             </li>
           `
-        )}
+        ): html`
+        <li class="people-person">          
+        </li>
+      ` 
+      }
         ${this.people.length > this.showMax ? this.renderOverflow() : null}
       </ul>
     `;
